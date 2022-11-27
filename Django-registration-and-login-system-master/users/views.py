@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 
-
+@login_required
 def home(request):
     return render(request, 'users/home.html')
 
