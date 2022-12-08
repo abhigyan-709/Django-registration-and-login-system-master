@@ -1,7 +1,54 @@
-{% extends 'basic.html' %}
-
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title%}
 {% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
+        <h1>Summation
+            Result = {{result}}
+        </h1>
+<!--<form action="add" method="POST">
+    {% csrf_token %}
 
-<h1> Result = {{result}} </h1>
+    Enter first number: <input type="text" name="num1"><br><br>
+    Enter second number: <input type="text" name="num2"><br><br>
+    <input type="submit">
+</form>
 
-{% endblock %}
+<h1>Subtraction</h1>
+<form action="sub" method="POST">
+    {% csrf_token %}
+
+    Enter first number: <input type="text" name="num1"><br><br>
+    Enter second number: <input type="text" name="num2"><br><br>
+    <input type="submit">
+</form>
+
+<h1>Multiplication</h1>
+<form action="multi" method="POST">
+    {% csrf_token %}
+
+    Enter first number: <input type="text" name="num1"><br><br>
+    Enter second number: <input type="text" name="num2"><br><br>
+    <input type="submit">
+</form>
+
+<h1>Division</h1>
+<form action="div" method="POST">
+    {% csrf_token %}
+
+    Enter first number: <input type="text" name="num1"><br><br>
+    Enter second number: <input type="text" name="num2"><br><br>
+    <input type="submit">
+</form>-->
+
+        <hr class="my-4">
+        <p class="lead">
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
+            {% endif %}
+        </p>
+    </div>
+
+{% endblock content %}

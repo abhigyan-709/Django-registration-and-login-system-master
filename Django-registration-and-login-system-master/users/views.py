@@ -12,9 +12,7 @@ from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 def home(request):
     return render(request, 'users/home.html')
 
-
 def addition(request):
-
     num1 = request.POST['num1']
     num2 = request.POST['num2']
 
@@ -23,10 +21,10 @@ def addition(request):
         b = int(num2)
         res = a + b
 
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
     else:
         res = "Only digits are allowed"
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
 
 def subtraction(request):
 
@@ -38,10 +36,10 @@ def subtraction(request):
         b = int(num2)
         res = a - b
 
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
     else:
         res = "Only digits are allowed"
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
 
 
 def multiplication(request):
@@ -54,10 +52,10 @@ def multiplication(request):
         b = int(num2)
         res = a * b
 
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
     else:
         res = "Only digits are allowed"
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
 
 
 def division(request):
@@ -72,13 +70,13 @@ def division(request):
 
         if b == 0:
             res = "Zero divide error"
-            return render(request, "result.html", {"result": res})
+            return render(request, "users/result.html", {"result": res})
         else:
             res = a / b
-            return render(request, "result.html", {"result": res})
+            return render(request, "users/result.html", {"result": res})
     else:
         res = "Only digits are allowed"
-        return render(request, "result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res})
  
 
 class RegisterView(View):
