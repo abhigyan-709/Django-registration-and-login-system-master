@@ -8,11 +8,11 @@
             a Python-based free and open-source web framework that follows the model–template–views architectural pattern.
         </p>
         <h1>Addition</h1>
-<form action="add" method="POST">
-    {% csrf_token %}
 
-    Enter first number: <input type="text" name="num1"><br><br>
-    Enter second number: <input type="text" name="num2"><br><br>
+<form action="equipments" method="POST">
+    {% csrf_token %}
+    Equipment Name: <input type="text" name="name"><br><br>
+    Number of Equipments: <input type="text" name="number"><br><br>
     <input type="submit">
 </form>
 

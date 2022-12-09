@@ -5,25 +5,35 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
-
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
+import pandas as pd
+import numpy as np
+from datetime import datetime
+import random
+import matplotlib.dates as mdates
+
 
 @login_required
 def home(request):
     return render(request, 'users/home.html')
 
-def addition(request):
-    num1 = request.POST['num1']
-    num2 = request.POST['num2']
+def EquipmentDetails(request):
+    name = request.POST['name']
+    number = request.POST['number']
 
-    if num1.isdigit() and num2.isdigit():
-        a = int(num1)
-        b = int(num2)
-        res = a + b
+    if name.isalpha() and number.isdigit():
+        a = str(name)
+        b = int(number)
+        res1 = a
+        res2 = b
 
-        return render(request, "users/result.html", {"result": res})
+        return render(request, "users/result.html", {"result": res1,
+                                                    "result2": res2})
     else:
-        res = "Only digits are allowed"
+        res = "Type Correct Value"
         return render(request, "users/result.html", {"result": res})
 
 def subtraction(request):
@@ -77,7 +87,7 @@ def division(request):
     else:
         res = "Only digits are allowed"
         return render(request, "users/result.html", {"result": res})
- 
+
 
 class RegisterView(View):
     form_class = RegisterForm
