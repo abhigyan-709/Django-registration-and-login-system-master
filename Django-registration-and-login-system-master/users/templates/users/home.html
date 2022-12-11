@@ -2,12 +2,11 @@
 {% block title %} Home Page {% endblock title%}
 {% block content %}
     <div class="jumbotron">
-        <h1 class="display-4">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
+        <h1 class="display-10">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
         <p class="lead">
-            This is <b> User Input Based Calculator</b> build with django which is
-            a Python-based free and open-source web framework that follows the model–template–views architectural pattern.
+            This is <b> User Input Based Temperature Analysis System</b> build with django.
         </p>
-        <h1>Addition</h1>
+        <h2>Equipment Analysis System</h2>
 
 <form action="equipments" method="POST">
     {% csrf_token %}
@@ -15,34 +14,6 @@
     Number of Equipments: <input type="text" name="number"><br><br>
     <input type="submit">
 </form>
-
-<h1>Subtraction</h1>
-<form action="sub" method="POST">
-    {% csrf_token %}
-
-    Enter first number: <input type="text" name="num1"><br><br>
-    Enter second number: <input type="text" name="num2"><br><br>
-    <input type="submit">
-</form>
-
-<h1>Multiplication</h1>
-<form action="multi" method="POST">
-    {% csrf_token %}
-
-    Enter first number: <input type="text" name="num1"><br><br>
-    Enter second number: <input type="text" name="num2"><br><br>
-    <input type="submit">
-</form>
-
-<h1>Division</h1>
-<form action="div" method="POST">
-    {% csrf_token %}
-
-    Enter first number: <input type="text" name="num1"><br><br>
-    Enter second number: <input type="text" name="num2"><br><br>
-    <input type="submit">
-</form>
-
         <hr class="my-4">
         <p class="lead">
             {% if user.is_authenticated %}

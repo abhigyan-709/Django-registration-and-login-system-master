@@ -23,69 +23,22 @@ def home(request):
 def EquipmentDetails(request):
     name = request.POST['name']
     number = request.POST['number']
-
+    date1 = request.POST['date1']
+    date2 = request.POST['date2']
+    temp1 = request.POST['temp1']
+    temp2 = request.POST['temp2']
+ 
     if name.isalpha() and number.isdigit():
         a = str(name)
         b = int(number)
         res1 = a
         res2 = b
+        
 
         return render(request, "users/result.html", {"result": res1,
                                                     "result2": res2})
     else:
         res = "Type Correct Value"
-        return render(request, "users/result.html", {"result": res})
-
-def subtraction(request):
-
-    num1 = request.POST['num1']
-    num2 = request.POST['num2']
-
-    if num1.isdigit() and num2.isdigit():
-        a = int(num1)
-        b = int(num2)
-        res = a - b
-
-        return render(request, "users/result.html", {"result": res})
-    else:
-        res = "Only digits are allowed"
-        return render(request, "users/result.html", {"result": res})
-
-
-def multiplication(request):
-
-    num1 = request.POST['num1']
-    num2 = request.POST['num2']
-
-    if num1.isdigit() and num2.isdigit():
-        a = int(num1)
-        b = int(num2)
-        res = a * b
-
-        return render(request, "users/result.html", {"result": res})
-    else:
-        res = "Only digits are allowed"
-        return render(request, "users/result.html", {"result": res})
-
-
-def division(request):
-
-    num1 = request.POST['num1']
-    num2 = request.POST['num2']
-
-    
-    if num1.isdigit() and num2.isdigit():
-        a = int(num1)
-        b = int(num2)
-
-        if b == 0:
-            res = "Zero divide error"
-            return render(request, "users/result.html", {"result": res})
-        else:
-            res = a / b
-            return render(request, "users/result.html", {"result": res})
-    else:
-        res = "Only digits are allowed"
         return render(request, "users/result.html", {"result": res})
 
 
