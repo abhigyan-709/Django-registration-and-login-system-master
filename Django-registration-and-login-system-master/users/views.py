@@ -31,12 +31,23 @@ def EquipmentDetails(request):
     if name.isalpha() and number.isdigit():
         a = str(name)
         b = int(number)
+        c =  datetime.strptime(date1,"%d/%m/%Y %H:%M")
+        d =  datetime.strptime(date2,"%d/%m/%Y %H:%M")
+        e = float(temp1)
+        f = float(temp2)
         res1 = a
         res2 = b
-        
+        res3 = c
+        res4 = d
+        res5 = e
+        res6 = f
 
         return render(request, "users/result.html", {"result": res1,
-                                                    "result2": res2})
+                                                    "result2": res2,
+                                                    "result3": res3,
+                                                    "result4": res4,
+                                                    "result5": res5,
+                                                    "result6": res6,})
     else:
         res = "Type Correct Value"
         return render(request, "users/result.html", {"result": res})
