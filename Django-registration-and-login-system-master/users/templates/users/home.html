@@ -6,16 +6,16 @@
         <p class="lead">
             This is <b> User Input Based Temperature Analysis System</b> build with django.
         </p>
-        <h2>Equipment Analysis System</h2>
+        <h2>Temperature Analysis System</h2>
 
 <form action="equipments" method="POST">
     {% csrf_token %}
-    Equipment Name: <input type="text" name="name"><br><br>
-    Number of Equipments: <input type="text" name="number"><br><br>
-    Start Date of Sensor: <input type="text" name="date1"><br><br>
-    End Date of Sensor: <input type="text" name="date2"><br><br>
-    Lowest temperature Recorded: <input type="text" name="temp1"><br><br>
-    Highest temperature Recorded: <input type="text" name="temp2"><br><br>
+    Equipment Name: <input type="text" name="name"> Number of Equipments: <input type="text" name="number"><br>
+    <br><br>
+    Start Date of Sensor: <input type="text" name="date1"> End Date of Sensor: <input type="text" name="date2"><br>
+    <br><br>
+    Lowest temperature Recorded: <input type="text" name="temp1"> Highest temperature Recorded: <input type="text" name="temp2"><br>
+    <br>
     <input type="submit">
 </form>
         <hr class="my-4">

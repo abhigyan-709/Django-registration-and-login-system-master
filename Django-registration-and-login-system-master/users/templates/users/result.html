@@ -3,15 +3,15 @@
 {% block content %}
     <div class="jumbotron">
         <p class="display-10">Welcome, {{user.first_name.title|default:'Guest'}}</p>
-        <h4>
-            Equipment Name: {{result}}<br>
-            Number of Instruments: {{result2}}<br>
-            Start Date of Sensor: {{result3}}<br>
-            End Date of Sensor: {{result4}}<br>
-            Lowest Temperature: {{result5}}<br>
-            Highest Temperature: {{result6}}<br>
+        <h5>
+            Equipment Name: {{result}}<br><br>
+            Number of Instruments: {{result2}}<br><br>
+            Start Date of Sensor: {{result3}}<br><br>
+            End Date of Sensor: {{result4}}<br><br>
+            Lowest Temperature: {{result5}}<br><br>
+            Highest Temperature: {{result6}}<br><br>
 
-        </h4>
+        </h5>
         <hr class="my-4">
         <p class="lead">
             {% if user.is_authenticated %}
