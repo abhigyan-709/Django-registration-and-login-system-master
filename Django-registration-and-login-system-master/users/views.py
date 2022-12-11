@@ -21,36 +21,51 @@ def home(request):
     return render(request, 'users/home.html')
 
 def EquipmentDetails(request):
-    name = request.POST['name']
-    number = request.POST['number']
-    date1 = request.POST['date1']
+
+# setting the global data
+
+    global a  
+    global b   
+    global c   
+    global d  
+    global e  
+    global f  
+
+# getting the respective inputs for the variables
+    name = request.POST['name']  
+    number = request.POST['number']  
+    date1 = request.POST['date1']   
     date2 = request.POST['date2']
-    temp1 = request.POST['temp1']
-    temp2 = request.POST['temp2']
+    interval = request.POST['interval']   
+    temp1 = request.POST['temp1']   
+    temp2 = request.POST['temp2']  
  
+ # perform typecasting for the respective input to perform calculations.
     if name.isalpha() and number.isdigit():
-        a = str(name)
-        b = int(number)
-        c =  datetime.strptime(date1,"%d/%m/%Y %H:%M")
+        a = str(name) 
+        b = int(number)  
+        c =  datetime.strptime(date1,"%d/%m/%Y %H:%M") 
         d =  datetime.strptime(date2,"%d/%m/%Y %H:%M")
+        interval = int(interval) 
         e = float(temp1)
         f = float(temp2)
-        res1 = a
-        res2 = b
-        res3 = c
-        res4 = d
-        res5 = e
-        res6 = f
 
-        return render(request, "users/result.html", {"result": res1,
-                                                    "result2": res2,
-                                                    "result3": res3,
-                                                    "result4": res4,
-                                                    "result5": res5,
-                                                    "result6": res6,})
+        return render(request, "users/result.html", {"result": a,
+                                                    "result2": b,
+                                                    "result3": c,
+                                                    "result4": d,
+                                                    "result_interval": interval,
+                                                    "result5": e,
+                                                    "result6": f,})
     else:
         res = "Type Correct Value"
         return render(request, "users/result.html", {"result": res})
+
+
+def ProcessData(request):
+    pass
+
+
 
 
 class RegisterView(View):

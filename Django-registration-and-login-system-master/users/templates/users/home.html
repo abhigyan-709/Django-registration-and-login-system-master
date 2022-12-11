@@ -10,13 +10,15 @@
 
 <form action="equipments" method="POST">
     {% csrf_token %}
-    Equipment Name: <input type="text" name="name"> Number of Equipments: <input type="text" name="number"><br>
+    Equipment Name: <input type="text" name="name" required="true"> Number of Equipments: <input type="text" name="number" required="true"><br>
     <br><br>
-    Start Date of Sensor: <input type="text" name="date1"> End Date of Sensor: <input type="text" name="date2"><br>
+    Start Date of Sensor(DD/MM/YYYY HH:MM): <input type="text" name="date1" required="true"> End Date of Sensor(DD/MM/YYYY HH:MM): <input type="text" name="date2" required="true"><br>
     <br><br>
-    Lowest temperature Recorded: <input type="text" name="temp1"> Highest temperature Recorded: <input type="text" name="temp2"><br>
+    Sensors running at interval of(in minutes): <input type="text" name="interval" required="true"><br>
+    <br><br>
+    Lowest temperature Recorded: <input type="text" name="temp1" required="true"> Highest temperature Recorded: <input type="text" name="temp2" required="true"><br>
     <br>
-    <input type="submit">
+    <input type="submit" value="Validate Data">
 </form>
         <hr class="my-4">
         <p class="lead">
