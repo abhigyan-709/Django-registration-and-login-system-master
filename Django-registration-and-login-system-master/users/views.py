@@ -62,7 +62,7 @@ def EquipmentDetails(request):
         return render(request, "users/result.html", {"result": res})
 
 
-def ProcessData(request):
+def ProcessData(request):  
     pass
 
 
