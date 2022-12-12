@@ -14,7 +14,7 @@ import numpy as np
 from datetime import datetime
 import random
 import matplotlib.dates as mdates
-
+import json
 
 @login_required
 def home(request):
@@ -91,7 +91,14 @@ def ProcessData(request):
     df2['Time'] = [d.time() for d in df['Time']]
     df2 = df.assign(Temperature = lst)
 
-    
+    json_records = df2.reset_index().to_json(orient ='records')
+    data2 = []
+    data2 = json.loads(json_records)
+    context = {
+        'd2' : data2
+    }
+
+    return render(request, 'table.html', context)
 
 
 
