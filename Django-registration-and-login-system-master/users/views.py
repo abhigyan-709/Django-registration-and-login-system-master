@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
+from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm, SensorForm
 import matplotlib.pyplot as plt
 import io
 import urllib, base64
@@ -15,12 +15,12 @@ from datetime import datetime
 import random
 import matplotlib.dates as mdates
 import json
-import seaborn as sns
 from django.shortcuts import HttpResponse
 
 @login_required
 def home(request):
     return render(request, 'users/home.html')
+
 
 def EquipmentDetails(request):
 
@@ -222,7 +222,7 @@ def profile(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-
+        sensor_form = SensorForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -233,3 +233,4 @@ def profile(request):
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
     return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+

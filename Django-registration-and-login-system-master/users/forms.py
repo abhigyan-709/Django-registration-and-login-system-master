@@ -2,8 +2,21 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from .models import Profile
+from .models import Profile, SensorData
 
+class SensorForm(forms.ModelForm):
+    # user = forms.OneToOneField(User, on_delete=models.CASCADE)
+    name = forms.CharField(max_length=100)
+    number = forms.IntegerField()
+    interval = forms.IntegerField()
+    date1 = forms.DateTimeField(help_text="Enter the value in DD/MM/YY HH:MM")
+    date2 = forms.DateTimeField(help_text="Enter the value in DD/MM/YY HH:MM")
+    temp1 = forms.FloatField(help_text="Enter the Minimum Temperature Recorded")
+    temp2 = forms.FloatField(help_text="Enter the Maximum Temperature Recorded")
+
+    class Meta:
+        model = SensorData
+        fields = ['name', 'number', 'interval', 'date1', 'date2', 'temp1', 'temp2']
 
 class RegisterForm(UserCreationForm):
     # fields we want to include and customize in our form
