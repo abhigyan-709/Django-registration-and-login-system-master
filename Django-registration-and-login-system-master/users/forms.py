@@ -14,6 +14,8 @@ class SensorForm(forms.ModelForm):
     temp1 = forms.FloatField(help_text="Enter the Minimum Temperature Recorded")
     temp2 = forms.FloatField(help_text="Enter the Maximum Temperature Recorded")
 
+    # last commit
+
     class Meta:
         model = SensorData
         fields = ['name', 'number', 'interval', 'date1', 'date2', 'temp1', 'temp2']
