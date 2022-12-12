@@ -15,6 +15,8 @@ from datetime import datetime
 import random
 import matplotlib.dates as mdates
 import json
+from django.shortcuts import HttpResponse
+import time
 
 @login_required
 def home(request):
@@ -31,6 +33,20 @@ def EquipmentDetails(request):
     global e  
     global f  
     global g
+
+    global name
+    global number 
+    global date1
+    global date2
+    global interval 
+    global temp1 
+    global temp2
+
+    global data
+    global lst 
+    global df 
+    global df2
+    global df3
 
 # getting the respective inputs for the variables
     name = request.POST['name']  
@@ -52,6 +68,32 @@ def EquipmentDetails(request):
         f = float(temp2)
         g = interval
 
+        data = pd.date_range(start=date1, end=date2, freq=str(interval)+'min')
+        df = pd.DataFrame(
+            {
+                "Date": data
+            }
+        )
+        
+        df.index = np.arange(1, len(df) + 1)
+
+        lst = []
+        for i in range(len(df)):
+            ran = random.uniform(float(temp1), float(temp2))
+            ran2 = round(ran, 2)
+            lst.append(ran2)
+
+        df = df.assign(Temperature = lst)
+
+        df2 = pd.DataFrame()
+        df2['Date'] = [d.date() for d in df['Date']]
+        df2['Time'] = [d.time() for d in df['Date']]
+        df2 = df2.assign(Temperature = lst)
+    
+        df2.index = np.arange(1, len(df2) + 1)
+        df3 = df2.to_html()
+
+
         return render(request, "users/result.html", {"result": a,
                                                     "result2": b,
                                                     "result3": c,
@@ -59,46 +101,35 @@ def EquipmentDetails(request):
                                                     "result_interval": interval,
                                                     "result5": e,
                                                     "result6": f,})
+
+
     else:
         res = "Type Correct Value"
         return render(request, "users/result.html", {"result": res})
 
 
+
 def ProcessData(request):  
-    global data
-    global lst 
-    global df 
-    global df2
 
-    data = pd.date_range(start=c, end=d, freq=str(g)+'min')
-    df = pd.DataFrame(
-        {
-            "Date": data
-        }
-    )
-    df.index = np.arange(1, len(df) + 1)
 
-    lst = []
-    for i in range(len(df)):
-        ran = random.uniform(float(e), float(f))
-        ran2 = round(ran, 2)
-        lst.append(ran2)
+    return HttpResponse(df3)
+    
+   # df2 = pd.DataFrame()
+   # df2['Date'] = [d.date() for d in df['Date']]
+   # df2['Time'] = [d.time() for d in df['Time']]
+   # df2 = df.assign(Temperature = lst)
 
-    df = df.assign(Temperature = lst)
+    # df2.to_csv('df_print.csv', index = False)
 
-    df2 = pd.DataFrame()
-    df2['Date'] = [d.date() for d in df['Date']]
-    df2['Time'] = [d.time() for d in df['Time']]
-    df2 = df.assign(Temperature = lst)
+    
 
-    json_records = df2.reset_index().to_json(orient ='records')
-    data2 = []
-    data2 = json.loads(json_records)
-    context = {
-        'd2' : data2
-    }
 
-    return render(request, 'users/result.html', context)
+
+
+
+    
+
+    
 
 
 
