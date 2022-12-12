@@ -98,7 +98,7 @@ def ProcessData(request):
         'd2' : data2
     }
 
-    return render(request, 'table.html', context)
+    return render(request, 'users/result.html', context)
 
 
 
