@@ -16,7 +16,6 @@ import random
 import matplotlib.dates as mdates
 import json
 from django.shortcuts import HttpResponse
-import time
 
 @login_required
 def home(request):
@@ -47,6 +46,7 @@ def EquipmentDetails(request):
     global df 
     global df2
     global df3
+    global uri
 
 # getting the respective inputs for the variables
     name = request.POST['name']  
@@ -68,22 +68,42 @@ def EquipmentDetails(request):
         f = float(temp2)
         g = interval
 
-        data = pd.date_range(start=date1, end=date2, freq=str(interval)+'min')
-        df = pd.DataFrame(
-            {
-                "Date": data,
-            }
-        )
+        fig, ax = plt.subplots()
+
+        for j in range(int(number)):
+
+            data = pd.date_range(start=date1, end=date2, freq=str(interval)+'min')
+            df = pd.DataFrame(
+                {
+                    "Date": data,
+                }
+            )
         
-        df.index = np.arange(1, len(df) + 1)
+            df.index = np.arange(1, len(df) + 1)
 
-        lst = []
-        for i in range(len(df)):
-            ran = random.uniform(float(temp1), float(temp2))
-            ran2 = round(ran, 2)
-            lst.append(ran2)
+            lst = []
+            for i in range(len(df)):
+                ran = random.uniform(float(temp1), float(temp2))
+                ran2 = round(ran, 2)
+                lst.append(ran2)
 
-        df = df.assign(Temperature = lst)
+            df = df.assign(Temperature = lst)
+
+            plt.xlabel('Date & Time')
+            plt.ylabel('Temperature')
+            plt.style.use('Solarize_Light2')
+            plt.title("Dates v/s Temperature Graph of Sensors")
+            fig.autofmt_xdate()
+            xfmt = mdates.DateFormatter('%d-%m-%y %H:%M')
+            plt.plot(df["Date"], df["Temperature"])
+            ax.xaxis.set_major_formatter(xfmt)
+
+            fig2 = plt.gcf()
+            buf = io.BytesIO()
+            fig2.savefig(buf, format='png')
+            buf.seek(0)
+            string = base64.b64encode(buf.read())
+            uri = urllib.parse.quote(string)
 
         df2 = pd.DataFrame()
         df2['Date'] = [d.date() for d in df['Date']]
@@ -123,26 +143,10 @@ def ProcessData(request):
 
 
     return HttpResponse(df3)
-    
-   # df2 = pd.DataFrame()
-   # df2['Date'] = [d.date() for d in df['Date']]
-   # df2['Time'] = [d.time() for d in df['Time']]
-   # df2 = df.assign(Temperature = lst)
-
-    # df2.to_csv('df_print.csv', index = False)
-
-    
 
 
-
-
-
-    
-
-    
-
-
-
+def plotData(request):
+    return render(request, 'users/plot.html', {'data': uri})
 
 
 class RegisterView(View):

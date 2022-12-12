@@ -6,6 +6,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('equipments', views.EquipmentDetails, name='equipments'),
     path('dataframe', views.ProcessData, name='dataframe'),
+    path('plot', views.plotData, name='plot'),
     path('register/', RegisterView.as_view(), name='users-register'),
     path('profile/', profile, name='users-profile'),
 ]
