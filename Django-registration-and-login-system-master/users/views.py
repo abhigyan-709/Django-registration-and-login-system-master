@@ -71,7 +71,7 @@ def EquipmentDetails(request):
         data = pd.date_range(start=date1, end=date2, freq=str(interval)+'min')
         df = pd.DataFrame(
             {
-                "Date": data
+                "Date": data,
             }
         )
         
@@ -91,6 +91,7 @@ def EquipmentDetails(request):
         df2 = df2.assign(Temperature = lst)
     
         df2.index = np.arange(1, len(df2) + 1)
+        df2['Interval'] = interval
         df3 = df2.to_html()
 
         df2.to_csv('users\csv\df_print.csv', index=False)
@@ -101,7 +102,6 @@ def EquipmentDetails(request):
 
         data2 = []
         data2 = json.loads(json_records)
-        # context = {'d': data}
 
         return render(request, "users/result.html", {"result": a,
                                                     "result2": b,
