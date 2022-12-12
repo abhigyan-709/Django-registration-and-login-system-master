@@ -100,7 +100,7 @@ def EquipmentDetails(request):
 
             fig2 = plt.gcf()
             buf = io.BytesIO()
-            fig2.savefig(buf, format='png')
+            fig2.savefig(buf, format='png', dpi=1200)
             buf.seek(0)
             string = base64.b64encode(buf.read())
             uri = urllib.parse.quote(string)
