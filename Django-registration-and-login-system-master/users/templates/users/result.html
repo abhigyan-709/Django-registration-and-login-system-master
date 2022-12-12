@@ -2,6 +2,7 @@
 {% block title %} Home Page {% endblock title%}
 {% block content %}
     <div class="jumbotron">
+        <meta charset="utf-8">
         <p class="display-10">Welcome, {{user.first_name.title|default:'Guest'}}</p>
         <h5>
             Equipment Name: {{result}}<br><br>

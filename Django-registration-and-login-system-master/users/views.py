@@ -93,6 +93,15 @@ def EquipmentDetails(request):
         df2.index = np.arange(1, len(df2) + 1)
         df3 = df2.to_html()
 
+        df2.to_csv('users\csv\df_print.csv', index=False)
+
+        df4 = pd.read_csv('users\csv\df_print.csv')
+
+        json_records = df4.reset_index().to_json(orient ='records')
+
+        data2 = []
+        data2 = json.loads(json_records)
+        # context = {'d': data}
 
         return render(request, "users/result.html", {"result": a,
                                                     "result2": b,
@@ -100,7 +109,8 @@ def EquipmentDetails(request):
                                                     "result4": d,
                                                     "result_interval": interval,
                                                     "result5": e,
-                                                    "result6": f,})
+                                                    "result6": f,
+                                                    "d2" : data2,})
 
 
     else:
