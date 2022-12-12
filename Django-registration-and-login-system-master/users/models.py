@@ -23,3 +23,20 @@ class Profile(models.Model):
             new_img = (100, 100)
             img.thumbnail(new_img)
             img.save(self.avatar.path)
+
+
+class SensorData(models.Model):
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    number = models.IntegerField()
+    date1 = models.DateTimeField(help_text="Enter the value in DD/MM/YY HH:MM")
+    date2 = models.DateTimeField(help_text="Enter the value in DD/MM/YY HH:MM")
+
+    temp1 = models.FloatField(help_text="Enter the Minimum Temperature Recorded")
+    temp2 = models.FloatField(help_text="Enter the Maximum Temperature Recorded")
+
+    def __str__(self):
+        return self.name
+    
+
