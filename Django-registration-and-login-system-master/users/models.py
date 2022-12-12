@@ -30,6 +30,7 @@ class SensorData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     number = models.IntegerField()
+    interval = models.IntegerField(default=15)
     date1 = models.DateTimeField(help_text="Enter the value in DD/MM/YY HH:MM")
     date2 = models.DateTimeField(help_text="Enter the value in DD/MM/YY HH:MM")
 
