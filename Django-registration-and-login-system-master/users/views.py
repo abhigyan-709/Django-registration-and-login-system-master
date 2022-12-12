@@ -30,6 +30,7 @@ def EquipmentDetails(request):
     global d  
     global e  
     global f  
+    global g
 
 # getting the respective inputs for the variables
     name = request.POST['name']  
@@ -49,6 +50,7 @@ def EquipmentDetails(request):
         interval = int(interval) 
         e = float(temp1)
         f = float(temp2)
+        g = interval
 
         return render(request, "users/result.html", {"result": a,
                                                     "result2": b,
@@ -63,7 +65,34 @@ def EquipmentDetails(request):
 
 
 def ProcessData(request):  
-    pass
+    global data
+    global lst 
+    global df 
+    global df2
+
+    data = pd.date_range(start=c, end=d, freq=str(g)+'min')
+    df = pd.DataFrame(
+        {
+            "Date": data
+        }
+    )
+    df.index = np.arange(1, len(df) + 1)
+
+    lst = []
+    for i in range(len(df)):
+        ran = random.uniform(float(e), float(f))
+        ran2 = round(ran, 2)
+        lst.append(ran2)
+
+    df = df.assign(Temperature = lst)
+
+    df2 = pd.DataFrame()
+    df2['Date'] = [d.date() for d in df['Date']]
+    df2['Time'] = [d.time() for d in df['Time']]
+    df2 = df.assign(Temperature = lst)
+
+    
+
 
 
 
