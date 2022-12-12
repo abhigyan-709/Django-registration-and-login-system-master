@@ -3,6 +3,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from .models import Profile, SensorData
+from django.forms import DateTimeInput
+
+# yshaswi
+class XDSoftDateTimePickerInput(DateTimeInput):
+    template_name = 'widgets/xdsoft_datetimepicker.html'
 
 class SensorForm(forms.ModelForm):
     # user = forms.OneToOneField(User, on_delete=models.CASCADE)

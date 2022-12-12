@@ -17,6 +17,7 @@ import matplotlib.dates as mdates
 import json
 from django.shortcuts import HttpResponse
 
+
 @login_required
 def home(request):
     return render(request, 'users/home.html')
@@ -26,28 +27,9 @@ def EquipmentDetails(request):
 
 # setting the global data
 
-    global a  
-    global b   
-    global c   
-    global d  
-    global e  
-    global f  
-    global g
-
-    global name
-    global number 
-    global date1
-    global date2
-    global interval 
-    global temp1 
-    global temp2
-
-    global data
-    global lst 
-    global df 
-    global df2
-    global df3
-    global uri
+    global a, b, c, d, e, f, g  
+    global name, number, date1, date2, interval, temp1, temp2
+    global data, lst, df, df2, df3, uri
 
 # getting the respective inputs for the variables
     name = request.POST['name']  
