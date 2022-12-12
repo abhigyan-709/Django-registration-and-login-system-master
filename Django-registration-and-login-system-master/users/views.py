@@ -15,6 +15,7 @@ from datetime import datetime
 import random
 import matplotlib.dates as mdates
 import json
+import seaborn as sns
 from django.shortcuts import HttpResponse
 
 @login_required
@@ -68,10 +69,11 @@ def EquipmentDetails(request):
         f = float(temp2)
         g = interval
 
+        
         fig, ax = plt.subplots()
 
         for j in range(int(number)):
-
+            
             data = pd.date_range(start=date1, end=date2, freq=str(interval)+'min')
             df = pd.DataFrame(
                 {
@@ -97,10 +99,10 @@ def EquipmentDetails(request):
             xfmt = mdates.DateFormatter('%d-%m-%y %H:%M')
             plt.plot(df["Date"], df["Temperature"])
             ax.xaxis.set_major_formatter(xfmt)
-
             fig2 = plt.gcf()
             buf = io.BytesIO()
-            fig2.savefig(buf, format='png', dpi=1200)
+            fig2.savefig(buf, dpi = 600)
+            fig2.savefig(buf, format='png')
             buf.seek(0)
             string = base64.b64encode(buf.read())
             uri = urllib.parse.quote(string)
