@@ -1,0 +1,57 @@
+<!-- templates/users/response_summary.html -->
+{% extends "users/base.html" %}
+{% block title %} Response Summary {% endblock title %}
+{% block content %}
+    <h1>Response Summary</h1>
+    <ul>
+        {% for user_response in user_responses %}
+            <li>{{ user_response.question.text }} - {% if user_response.answer %}Yes{% else %}No{% endif %}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Chart.js script -->
+    <div style="width: 400px; height: 400px; margin: auto;">
+        <canvas id="responseChart" width="400" height="400"></canvas>
+    </div>
+    <script>
+        var ctx = document.getElementById('responseChart').getContext('2d');
+        var yesCount = {{ yes_count }};
+        var noCount = {{ no_count }};
+
+        var data = {
+            datasets: [{
+                data: [yesCount, noCount],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                ],
+            }],
+            labels: ['Yes', 'No']
+        };
+
+        var options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Responses Distribution'
+            }
+        };
+
+        var responseChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    </script>
+{% endblock content %}

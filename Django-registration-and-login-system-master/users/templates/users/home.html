@@ -1,25 +1,32 @@
+<!-- templates/users/home.html -->
 {% extends "users/base.html" %}
 {% block title %} Home Page {% endblock title%}
 {% block content %}
     <div class="jumbotron">
-        <h1 class="display-10">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
-        <p class="lead">
-            This is <b> User Input Based Temperature Analysis System</b> build with django.
-        </p>
-        <h2>Temperature Analysis System</h2>
+        <h1 class="display-4">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
 
-<form action="equipments" method="POST">
-    {% csrf_token %}
-    Equipment Name: <input type="text" name="name" required="true"> Number of Equipments: <input type="text" name="number" required="true"><br>
-    <br><br>
-    Start Date of Sensor(DD/MM/YYYY HH:MM): <input type="text" name="date1" required="true"> End Date of Sensor(DD/MM/YYYY HH:MM): <input type="text" name="date2" required="true"><br>
-    <br><br>
-    Sensors running at interval of(in minutes): <input type="text" name="interval" required="true"><br>
-    <br><br>
-    Lowest temperature Recorded: <input type="text" name="temp1" required="true"> Highest temperature Recorded: <input type="text" name="temp2" required="true"><br>
-    <br>
-    <input type="submit" value="Validate Data">
-</form>
+        <form id="questionForm" action="{% url 'respond_to_question' %}" method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="form-container">
+                {% for question in questions %}
+                    <div class="mb-3 question">
+                        <label class="question-text">{{ question.text }}</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="response_{{ question.id }}" id="true_{{ question.id }}" value="True" required>
+                            <label class="form-check-label" for="true_{{ question.id }}">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="response_{{ question.id }}" id="false_{{ question.id }}" value="False" required>
+                            <label class="form-check-label" for="false_{{ question.id }}">No</label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-success" id="submitBtn">Submit Responses</button>
+            </div>
+        </form>
+
         <hr class="my-4">
         <p class="lead">
             {% if user.is_authenticated %}
@@ -29,5 +36,4 @@
             {% endif %}
         </p>
     </div>
-
 {% endblock content %}

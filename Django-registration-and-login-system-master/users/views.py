@@ -5,132 +5,54 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm, SensorForm
-import matplotlib.pyplot as plt
-import io
-import urllib, base64
-import pandas as pd
-import numpy as np
-from datetime import datetime
-import random
-import matplotlib.dates as mdates
-import json
-from django.shortcuts import HttpResponse
+from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm, ResponseForm
+from .models import Question, UserResponse
+from django.http import HttpResponse
+from django.urls import reverse
+from django.core.paginator import Paginator
 
 
 @login_required
 def home(request):
-    return render(request, 'users/home.html')
+    questions = Question.objects.filter(is_active=True)
+    response_form = ResponseForm()
 
+    # paginator = Paginator(questions, 5)
+    # page = request.GET.get('page', 1)
+    # questions = paginator.get_page(page)
 
-def EquipmentDetails(request):
+    if request.method == 'POST':
+        response_form = ResponseForm(request.POST)
+        if response_form.is_valid():
+            response_obj = response_form.save(commit=False)
+            response_obj.user = request.user
+            response_obj.save()
+            messages.success(request, 'Response submitted successfully')
+            return redirect(reverse('response-summary'))
 
-# setting the global data
+    return render(request, 'users/home.html', {'questions': questions, 'response_form': response_form, 'user': request.user})
 
-    global a, b, c, d, e, f, g  
-    global name, number, date1, date2, interval, temp1, temp2
-    global data, lst, df, df2, df3, uri
+@login_required
+def respond_to_question(request):
+    if request.method == 'POST':
+        for question in Question.objects.filter(is_active=True):
+            response_value = request.POST.get(f'response_{question.id}')
+            user_response, created = UserResponse.objects.get_or_create(user=request.user, question=question)
+            user_response.answer = response_value
+            user_response.save()
 
-# getting the respective inputs for the variables
-    name = request.POST['name']  
-    number = request.POST['number']  
-    date1 = request.POST['date1']   
-    date2 = request.POST['date2']
-    interval = request.POST['interval']   
-    temp1 = request.POST['temp1']   
-    temp2 = request.POST['temp2']  
- 
- # perform typecasting for the respective input to perform calculations.
-    if name.isalpha() and number.isdigit():
-        a = str(name) 
-        b = int(number)  
-        c =  datetime.strptime(date1,"%d/%m/%Y %H:%M") 
-        d =  datetime.strptime(date2,"%d/%m/%Y %H:%M")
-        interval = int(interval) 
-        e = float(temp1)
-        f = float(temp2)
-        g = interval
+        # Redirect to the response summary page after successful submission
+        return redirect(reverse('response-summary'))
 
-        
-        fig, ax = plt.subplots()
+    return HttpResponse("Invalid request method")
 
-        for j in range(int(number)):
-            
-            data = pd.date_range(start=date1, end=date2, freq=str(interval)+'min')
-            df = pd.DataFrame(
-                {
-                    "Date": data,
-                }
-            )
-        
-            df.index = np.arange(1, len(df) + 1)
+@login_required
+def response_summary(request):
+    user_responses = UserResponse.objects.filter(user=request.user)
+    yes_count = user_responses.filter(answer=True).count()
+    no_count = user_responses.filter(answer=False).count()
 
-            lst = []
-            for i in range(len(df)):
-                ran = random.uniform(float(temp1), float(temp2))
-                ran2 = round(ran, 2)
-                lst.append(ran2)
-
-            df = df.assign(Temperature = lst)
-
-            plt.xlabel('Date & Time')
-            plt.ylabel('Temperature')
-            plt.style.use('Solarize_Light2')
-            plt.title("Dates v/s Temperature Graph of Sensors")
-            fig.autofmt_xdate()
-            xfmt = mdates.DateFormatter('%d-%m-%y %H:%M')
-            plt.plot(df["Date"], df["Temperature"])
-            ax.xaxis.set_major_formatter(xfmt)
-            fig2 = plt.gcf()
-            buf = io.BytesIO()
-            fig2.savefig(buf, dpi = 600)
-            fig2.savefig(buf, format='png')
-            buf.seek(0)
-            string = base64.b64encode(buf.read())
-            uri = urllib.parse.quote(string)
-
-        df2 = pd.DataFrame()
-        df2['Date'] = [d.date() for d in df['Date']]
-        df2['Time'] = [d.time() for d in df['Date']]
-        df2 = df2.assign(Temperature = lst)
-    
-        df2.index = np.arange(1, len(df2) + 1)
-        df2['Interval'] = interval
-        df3 = df2.to_html()
-
-        df2.to_csv('users\csv\df_print.csv', index=False)
-
-        df4 = pd.read_csv('users\csv\df_print.csv')
-
-        json_records = df4.reset_index().to_json(orient ='records')
-
-        data2 = []
-        data2 = json.loads(json_records)
-
-        return render(request, "users/result.html", {"result": a,
-                                                    "result2": b,
-                                                    "result3": c,
-                                                    "result4": d,
-                                                    "result_interval": interval,
-                                                    "result5": e,
-                                                    "result6": f,
-                                                    "d2" : data2,})
-
-
-    else:
-        res = "Type Correct Value"
-        return render(request, "users/result.html", {"result": res})
-
-
-
-def ProcessData(request):  
-
-
-    return HttpResponse(df3)
-
-
-def plotData(request):
-    return render(request, 'users/plot.html', {'data': uri})
+    return render(request, 'users/response_summary.html', {'user_responses': user_responses, 'yes_count': yes_count, 'no_count': no_count})
 
 
 class RegisterView(View):
@@ -201,18 +123,22 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 
 @login_required
 def profile(request):
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        sensor_form = SensorForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='users-profile')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
+    pass
+    # if request.method == 'POST':
+    #     user_form = UpdateUserForm(request.POST, instance=request.user)
+    #     profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+    #     sensor_form = SensorForm(request.POST)
+    #     if user_form.is_valid() and profile_form.is_valid():
+    #         user_form.save()
+    #         profile_form.save()
+    #         messages.success(request, 'Your profile is updated successfully')
+    #         return redirect(to='users-profile')
+    # else:
+    #     user_form = UpdateUserForm(instance=request.user)
+    #     profile_form = UpdateProfileForm(instance=request.user.profile)
 
-    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+    # return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+
 

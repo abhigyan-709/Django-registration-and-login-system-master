@@ -1,13 +1,9 @@
 from django.contrib import admin
-from .models import Profile, SensorData
+from .models import Profile
 
 admin.site.register(Profile)
 
+from .models import Question, UserResponse
 
-class SensorDataAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'number','date1', 'date2', 'interval', 'temp1', 'temp2')
-
-    list_filter = ("name",)
-    search_fields = ['name', 'date1', 'date2']
-
-admin.site.register(SensorData, SensorDataAdmin)
+admin.site.register(Question)
+admin.site.register(UserResponse)
